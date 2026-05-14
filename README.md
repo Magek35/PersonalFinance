@@ -1,3 +1,3 @@
 # PersonalFinance
-Project project on OOP 
+Project on OOP 
 (Object-oriented programming c++)
