@@ -11,11 +11,11 @@
 #include <limits>
 #include <locale>
 #include <cctype>
-#include <ctime>   // для работы с датами
+#include <ctime>   // РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РґР°С‚Р°РјРё
 
 #include "Models.h"
 
-// приводит строку к нижнему регистру
+// РїСЂРёРІРѕРґРёС‚ СЃС‚СЂРѕРєСѓ Рє РЅРёР¶РЅРµРјСѓ СЂРµРіРёСЃС‚СЂСѓ
 inline std::string toLowerStr(const std::string& s) {
     std::string result = s;
     for (size_t i = 0; i < result.size(); ++i)
@@ -23,10 +23,10 @@ inline std::string toLowerStr(const std::string& s) {
     return result;
 }
 
-// Менеджер финансов: счета, категории, расходы, файлы
+// РњРµРЅРµРґР¶РµСЂ С„РёРЅР°РЅСЃРѕРІ: СЃС‡РµС‚Р°, РєР°С‚РµРіРѕСЂРёРё, СЂР°СЃС…РѕРґС‹, С„Р°Р№Р»С‹
 class FinanceManager {
 public:
-    static const std::size_t MAX_ACCOUNTS = 200; // ограничение на количество счетов
+    static const std::size_t MAX_ACCOUNTS = 200; // РѕРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‡РµС‚РѕРІ
 
     FinanceManager();
 
@@ -36,45 +36,45 @@ public:
     void addMoney(const std::string& accName, double amount);
 
     void addExpense(const std::string& accName, const std::string& catName,
-        const std::string& desc, double amount,
-        const std::string& date);
+                    const std::string& desc, double amount,
+                    const std::string& date);
 
     void generateReport(const std::string& period,
-        const std::string& filename);
+                        const std::string& filename);
     void generateTop(const std::string& period,
-        const std::string& filename);
+                     const std::string& filename);
 
     void saveToFile(const std::string& filename);
     void loadFromFile(const std::string& filename);
 
     const std::vector<Account*>& getAccounts() const;
 
-    // границы допустимых дат (включительно), формат YYYY-MM-DD
+    // РіСЂР°РЅРёС†С‹ РґРѕРїСѓСЃС‚РёРјС‹С… РґР°С‚ (РІРєР»СЋС‡РёС‚РµР»СЊРЅРѕ), С„РѕСЂРјР°С‚ YYYY-MM-DD
     void setDateBounds(const std::string& minDate,
-        const std::string& maxDate);
+                       const std::string& maxDate);
 
 private:
-    std::vector<Expense>  expenses_;   // список всех расходов
-    std::vector<Account*> accounts_;   // все счета
-    std::map<std::string, Category> categories_; // категории по ключу в нижнем регистре
+    std::vector<Expense>  expenses_;   // СЃРїРёСЃРѕРє РІСЃРµС… СЂР°СЃС…РѕРґРѕРІ
+    std::vector<Account*> accounts_;   // РІСЃРµ СЃС‡РµС‚Р°
+    std::map<std::string, Category> categories_; // РєР°С‚РµРіРѕСЂРёРё РїРѕ РєР»СЋС‡Сѓ РІ РЅРёР¶РЅРµРј СЂРµРіРёСЃС‚СЂРµ
 
-    std::string minDate_; // нижняя граница дат
-    std::string maxDate_; // верхняя граница дат
+    std::string minDate_; // РЅРёР¶РЅСЏСЏ РіСЂР°РЅРёС†Р° РґР°С‚
+    std::string maxDate_; // РІРµСЂС…РЅСЏСЏ РіСЂР°РЅРёС†Р° РґР°С‚
 
     Account* findAccount(const std::string& name) const;
 
     static bool isValidDateFormat(const std::string& d);
     static bool isDateInRange(const std::string& d,
-        const std::string& minD,
-        const std::string& maxD);
+                              const std::string& minD,
+                              const std::string& maxD);
 
-    // служебные функции для дат
-    static std::string getToday(); // текущая дата YYYY-MM-DD
+    // СЃР»СѓР¶РµР±РЅС‹Рµ С„СѓРЅРєС†РёРё РґР»СЏ РґР°С‚
+    static std::string getToday(); // С‚РµРєСѓС‰Р°СЏ РґР°С‚Р° YYYY-MM-DD
     static bool isSameDay(const std::string& d,
-        const std::string& today);
+                          const std::string& today);
     static bool isInLastNDays(const std::string& d,
-        const std::string& today,
-        int days);
+                              const std::string& today,
+                              int days);
     static bool isSameMonth(const std::string& d,
-        const std::string& today);
+                            const std::string& today);
 };
