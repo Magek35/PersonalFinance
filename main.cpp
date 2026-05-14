@@ -14,7 +14,7 @@ public:
         fm.addCategory("razvlecheniya");
         fm.addCategory("zdorove");
 
-        // Пример границ дат (можешь поменять при необходимости)
+        // РџСЂРёРјРµСЂ РіСЂР°РЅРёС† РґР°С‚ (РјРѕР¶РµС€СЊ РїРѕРјРµРЅСЏС‚СЊ РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё)
         fm.setDateBounds("2000-01-01", "2100-12-31");
 
         int choice;
@@ -33,23 +33,23 @@ public:
 
             switch (choice) {
             case 1:
-                std::cout << "Счёт (nalichnye / debetovaya / kreditnaya): ";
+                std::cout << "РЎС‡С‘С‚ (nalichnye / debetovaya / kreditnaya): ";
                 std::cin >> accName;
-                std::cout << "Сумма: ";
+                std::cout << "РЎСѓРјРјР°: ";
                 std::cin >> amount;
                 fm.addMoney(accName, amount);
                 break;
             case 2:
-                std::cout << "Счёт (nalichnye / debetovaya / kreditnaya): ";
+                std::cout << "РЎС‡С‘С‚ (nalichnye / debetovaya / kreditnaya): ";
                 std::cin >> accName;
-                std::cout << "Категория (eda / transport / razvlecheniya / zdorove): ";
+                std::cout << "РљР°С‚РµРіРѕСЂРёСЏ (eda / transport / razvlecheniya / zdorove): ";
                 std::cin >> catName;
-                std::cout << "Описание (можно по-русски): ";
+                std::cout << "РћРїРёСЃР°РЅРёРµ (РјРѕР¶РЅРѕ РїРѕ-СЂСѓСЃСЃРєРё): ";
                 std::cin.ignore();
                 std::getline(std::cin, desc);
-                std::cout << "Сумма: ";
+                std::cout << "РЎСѓРјРјР°: ";
                 std::cin >> amount;
-                std::cout << "Дата (YYYY-MM-DD): ";
+                std::cout << "Р”Р°С‚Р° (YYYY-MM-DD): ";
                 std::cin >> date;
                 fm.addExpense(accName, catName, desc, amount, date);
                 break;
@@ -82,22 +82,22 @@ public:
         const std::vector<Account*>& accs = fm.getAccounts();
         for (size_t i = 0; i < accs.size(); ++i) delete accs[i];
 
-        std::cout << "До свидания!\n";
+        std::cout << "Р”Рѕ СЃРІРёРґР°РЅРёСЏ!\n";
     }
 
 private:
     void printMenu() const {
-        std::cout << "\n ФИНАНСЫ \n";
-        std::cout << "1. Пополнить счёт\n";
-        std::cout << "2. Добавить затрату\n";
-        std::cout << "3. Отчёт по дню\n";
-        std::cout << "4. Отчёт по неделе\n";
-        std::cout << "5. Отчёт по месяцу\n";
-        std::cout << "6. Топ-3 (неделя)\n";
-        std::cout << "7. Топ-3 (месяц)\n";
-        std::cout << "8. Сохранить данные\n";
-        std::cout << "9. Загрузить данные\n";
-        std::cout << "0. Выход\n>> ";
+        std::cout << "\n Р¤РРќРђРќРЎР« \n";
+        std::cout << "1. РџРѕРїРѕР»РЅРёС‚СЊ СЃС‡С‘С‚\n";
+        std::cout << "2. Р”РѕР±Р°РІРёС‚СЊ Р·Р°С‚СЂР°С‚Сѓ\n";
+        std::cout << "3. РћС‚С‡С‘С‚ РїРѕ РґРЅСЋ\n";
+        std::cout << "4. РћС‚С‡С‘С‚ РїРѕ РЅРµРґРµР»Рµ\n";
+        std::cout << "5. РћС‚С‡С‘С‚ РїРѕ РјРµСЃСЏС†Сѓ\n";
+        std::cout << "6. РўРѕРї-3 (РЅРµРґРµР»СЏ)\n";
+        std::cout << "7. РўРѕРї-3 (РјРµСЃСЏС†)\n";
+        std::cout << "8. РЎРѕС…СЂР°РЅРёС‚СЊ РґР°РЅРЅС‹Рµ\n";
+        std::cout << "9. Р—Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ\n";
+        std::cout << "0. Р’С‹С…РѕРґ\n>> ";
     }
 };
 
