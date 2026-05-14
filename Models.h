@@ -45,18 +45,18 @@ public:
 class Expense {
     std::string        description_; // описание расхода
     double             amount_;      // сумма расхода
-    const Category* category_;    // указатель на категорию (ptr)
+    const Category*    category_;    // указатель на категорию (ptr)
     std::string        date_;        // YYYY-MM-DD
-    Account* account_;     // указатель на счёт
+    Account*           account_;     // указатель на счёт
 public:
     Expense();
     Expense(const std::string& desc, double amt,
-        const Category* cat, const std::string& dt,
-        Account* acc);
+            const Category* cat, const std::string& dt,
+            Account* acc);
 
     const std::string& getDescription() const;
     double             getAmount()      const;
-    const Category& getCategory()    const;  // константная ссылка
+    const Category&    getCategory()    const;  // константная ссылка
     const std::string& getDate()        const;
-    Account* getAccount()     const;
-};  
+    Account*           getAccount()     const;
+};
