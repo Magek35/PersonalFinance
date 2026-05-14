@@ -1,11 +1,10 @@
 #include "FinanceManager.h"
 
-// ===== Реализации Models (из Models.h) =====
+// ===== Р РµР°Р»РёР·Р°С†РёРё Models (РёР· Models.h) =====
 
 // Account
 Account::Account(const std::string& n)
-    : name_(n), balance_(0.0) {
-}
+    : name_(n), balance_(0.0) {}
 
 Account::~Account() {}
 
@@ -34,8 +33,7 @@ Wallet::Wallet(const std::string& n) : Account(n) {}
 
 // Card
 Card::Card(const std::string& n, double limit)
-    : Account(n), creditLimit_(limit) {
-}
+    : Account(n), creditLimit_(limit) {}
 
 bool Card::spendMoney(double amount) {
     if (amount > 0.0 && balance_ + creditLimit_ >= amount) {
@@ -52,15 +50,13 @@ const std::string& Category::getName() const { return name_; }
 // Expense
 Expense::Expense()
     : description_(), amount_(0.0),
-    category_(nullptr), date_(), account_(nullptr) {
-}
+      category_(nullptr), date_(), account_(nullptr) {}
 
 Expense::Expense(const std::string& desc, double amt,
-    const Category* cat, const std::string& dt,
-    Account* acc)
+                 const Category* cat, const std::string& dt,
+                 Account* acc)
     : description_(desc), amount_(amt),
-    category_(cat), date_(dt), account_(acc) {
-}
+      category_(cat), date_(dt), account_(acc) {}
 
 const std::string& Expense::getDescription() const { return description_; }
 double Expense::getAmount() const { return amount_; }
@@ -68,13 +64,13 @@ const Category& Expense::getCategory() const { return *category_; }
 const std::string& Expense::getDate() const { return date_; }
 Account* Expense::getAccount() const { return account_; }
 
-// ===== Утилиты дат для FinanceManager =====
+// ===== РЈС‚РёР»РёС‚С‹ РґР°С‚ РґР»СЏ FinanceManager =====
 
-// проверка YYYY-MM-DD
+// РїСЂРѕРІРµСЂРєР° YYYY-MM-DD
 bool FinanceManager::isValidDateFormat(const std::string& d) {
     if (d.size() != 10) return false;
     if (d[4] != '-' || d[7] != '-') return false;
-    for (size_t i : {0u, 1u, 2u, 3u, 5u, 6u, 8u, 9u}) {
+    for (size_t i : {0u,1u,2u,3u,5u,6u,8u,9u}) {
         if (!std::isdigit(static_cast<unsigned char>(d[i])))
             return false;
     }
@@ -82,9 +78,9 @@ bool FinanceManager::isValidDateFormat(const std::string& d) {
 }
 
 bool FinanceManager::isDateInRange(const std::string& d,
-    const std::string& minD,
-    const std::string& maxD) {
-    // для формата YYYY-MM-DD лексикографическое сравнение совпадает с хронологическим
+                                   const std::string& minD,
+                                   const std::string& maxD) {
+    // РґР»СЏ С„РѕСЂРјР°С‚Р° YYYY-MM-DD Р»РµРєСЃРёРєРѕРіСЂР°С„РёС‡РµСЃРєРѕРµ СЃСЂР°РІРЅРµРЅРёРµ СЃРѕРІРїР°РґР°РµС‚ СЃ С…СЂРѕРЅРѕР»РѕРіРёС‡РµСЃРєРёРј
     return d >= minD && d <= maxD;
 }
 
@@ -102,41 +98,41 @@ std::string FinanceManager::getToday() {
 }
 
 bool FinanceManager::isSameDay(const std::string& d,
-    const std::string& today) {
+                               const std::string& today) {
     return d == today;
 }
 
 bool FinanceManager::isInLastNDays(const std::string& d,
-    const std::string& today,
-    int days) {
+                                   const std::string& today,
+                                   int days) {
     std::tm tm_today{}, tm_d{};
     char dash;
     std::istringstream iss_today(today);
     std::istringstream iss_d(d);
 
     iss_today >> tm_today.tm_year >> dash >> tm_today.tm_mon >> dash >> tm_today.tm_mday;
-    iss_d >> tm_d.tm_year >> dash >> tm_d.tm_mon >> dash >> tm_d.tm_mday;
+    iss_d     >> tm_d.tm_year     >> dash >> tm_d.tm_mon     >> dash >> tm_d.tm_mday;
     if (iss_today.fail() || iss_d.fail()) return false;
 
     tm_today.tm_year -= 1900;
-    tm_today.tm_mon -= 1;
-    tm_d.tm_year -= 1900;
-    tm_d.tm_mon -= 1;
+    tm_today.tm_mon  -= 1;
+    tm_d.tm_year     -= 1900;
+    tm_d.tm_mon      -= 1;
 
     std::time_t tt_today = std::mktime(&tm_today);
-    std::time_t tt_d = std::mktime(&tm_d);
+    std::time_t tt_d     = std::mktime(&tm_d);
     if (tt_today == -1 || tt_d == -1) return false;
 
-    double diffSec = std::difftime(tt_today, tt_d);
+    double diffSec  = std::difftime(tt_today, tt_d);
     double diffDays = diffSec / (60 * 60 * 24);
 
     return diffDays >= 0.0 && diffDays < days;
 }
 
 bool FinanceManager::isSameMonth(const std::string& d,
-    const std::string& today) {
+                                 const std::string& today) {
     if (d.size() < 7 || today.size() < 7) return false;
-    // YYYY-MM одинаковые
+    // YYYY-MM РѕРґРёРЅР°РєРѕРІС‹Рµ
     return d.substr(0, 7) == today.substr(0, 7);
 }
 
@@ -144,11 +140,10 @@ bool FinanceManager::isSameMonth(const std::string& d,
 
 FinanceManager::FinanceManager()
     : minDate_("1900-01-01"),
-    maxDate_("2099-12-31") {
-}
+      maxDate_("2099-12-31") {}
 
 void FinanceManager::setDateBounds(const std::string& minDate,
-    const std::string& maxDate) {
+                                   const std::string& maxDate) {
     minDate_ = minDate;
     maxDate_ = maxDate;
 }
@@ -157,9 +152,9 @@ Account* FinanceManager::findAccount(const std::string& name) const {
     std::string low = toLowerStr(name);
     std::vector<Account*>::const_iterator it =
         std::find_if(accounts_.begin(), accounts_.end(),
-            [low](const Account* acc) {
-                return toLowerStr(acc->getName()) == low;
-            });
+                     [low](const Account* acc) {
+                         return toLowerStr(acc->getName()) == low;
+                     });
     return (it != accounts_.end()) ? *it : NULL;
 }
 
@@ -178,28 +173,27 @@ void FinanceManager::addMoney(const std::string& accName, double amount) {
     Account* acc = findAccount(accName);
     if (acc != NULL) {
         acc->addMoney(amount);
-        std::cout << "Пополнено на " << amount
-            << " на счёт [" << acc->getName() << "]\n";
-    }
-    else {
-        std::cout << "Счёт '" << accName << "' не найден!\n";
+        std::cout << "РџРѕРїРѕР»РЅРµРЅРѕ РЅР° " << amount
+                  << " РЅР° СЃС‡С‘С‚ [" << acc->getName() << "]\n";
+    } else {
+        std::cout << "РЎС‡С‘С‚ '" << accName << "' РЅРµ РЅР°Р№РґРµРЅ!\n";
     }
 }
 
 void FinanceManager::addExpense(const std::string& accName,
-    const std::string& catName,
-    const std::string& desc,
-    double amount,
-    const std::string& date) {
+                                const std::string& catName,
+                                const std::string& desc,
+                                double amount,
+                                const std::string& date) {
     if (!isValidDateFormat(date) ||
         !isDateInRange(date, minDate_, maxDate_)) {
-        std::cout << "Ошибка: неверная дата или вне допустимого диапазона!\n";
+        std::cout << "РћС€РёР±РєР°: РЅРµРІРµСЂРЅР°СЏ РґР°С‚Р° РёР»Рё РІРЅРµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ РґРёР°РїР°Р·РѕРЅР°!\n";
         return;
     }
 
     Account* acc = findAccount(accName);
     if (acc == NULL || !acc->spendMoney(amount)) {
-        std::cout << "Ошибка: счёт не найден или недостаточно средств!\n";
+        std::cout << "РћС€РёР±РєР°: СЃС‡С‘С‚ РЅРµ РЅР°Р№РґРµРЅ РёР»Рё РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЃСЂРµРґСЃС‚РІ!\n";
         return;
     }
 
@@ -210,11 +204,11 @@ void FinanceManager::addExpense(const std::string& accName,
     Category& cat = categories_[lowCat];
     Expense e(desc, amount, &cat, date, acc);
     expenses_.push_back(e);
-    std::cout << "Затрата '" << desc << "' добавлена!\n";
+    std::cout << "Р—Р°С‚СЂР°С‚Р° '" << desc << "' РґРѕР±Р°РІР»РµРЅР°!\n";
 }
 
 void FinanceManager::generateReport(const std::string& period,
-    const std::string& filename) {
+                                    const std::string& filename) {
     std::map<std::string, double> sums;
 
     std::string today = getToday();
@@ -225,16 +219,13 @@ void FinanceManager::generateReport(const std::string& period,
 
         bool use = false;
         if (period == "day") {
-            use = isSameDay(d, today);          // только за сегодня
-        }
-        else if (period == "week") {
-            use = isInLastNDays(d, today, 7);   // последние 7 дней
-        }
-        else if (period == "month") {
-            use = isSameMonth(d, today);        // за текущий месяц
-        }
-        else {
-            use = true;                         // неизвестный период — берём всё
+            use = isSameDay(d, today);          // С‚РѕР»СЊРєРѕ Р·Р° СЃРµРіРѕРґРЅСЏ
+        } else if (period == "week") {
+            use = isInLastNDays(d, today, 7);   // РїРѕСЃР»РµРґРЅРёРµ 7 РґРЅРµР№
+        } else if (period == "month") {
+            use = isSameMonth(d, today);        // Р·Р° С‚РµРєСѓС‰РёР№ РјРµСЃСЏС†
+        } else {
+            use = true;                         // РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РїРµСЂРёРѕРґ вЂ” Р±РµСЂС‘Рј РІСЃС‘
         }
 
         if (!use) continue;
@@ -244,12 +235,12 @@ void FinanceManager::generateReport(const std::string& period,
 
     std::ofstream file(filename.c_str());
     if (!file.is_open()) {
-        std::cout << "Не удалось открыть файл отчёта!\n";
+        std::cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РѕС‚С‡С‘С‚Р°!\n";
         return;
     }
 
-    file << "ОТЧЁТ ПО " << period << "\n\n";
-    file << "Категория(ключ)\tСумма\n";
+    file << "РћРўР§РЃРў РџРћ " << period << "\n\n";
+    file << "РљР°С‚РµРіРѕСЂРёСЏ(РєР»СЋС‡)\tРЎСѓРјРјР°\n";
 
     double total = std::accumulate(
         sums.begin(), sums.end(), 0.0,
@@ -258,18 +249,18 @@ void FinanceManager::generateReport(const std::string& period,
         });
 
     for (std::map<std::string, double>::const_iterator it = sums.begin();
-        it != sums.end(); ++it) {
+         it != sums.end(); ++it) {
         file << it->first << "\t\t"
-            << std::fixed << std::setprecision(2) << it->second << "\n";
+             << std::fixed << std::setprecision(2) << it->second << "\n";
     }
 
-    file << "\nИТОГО: " << std::fixed << std::setprecision(2) << total << "\n";
+    file << "\nРРўРћР“Рћ: " << std::fixed << std::setprecision(2) << total << "\n";
     file.close();
-    std::cout << "Отчёт сохранён в " << filename << "\n";
+    std::cout << "РћС‚С‡С‘С‚ СЃРѕС…СЂР°РЅС‘РЅ РІ " << filename << "\n";
 }
 
 void FinanceManager::generateTop(const std::string& period,
-    const std::string& filename) {
+                                 const std::string& filename) {
     std::map<std::string, double> sums;
     for (size_t i = 0; i < expenses_.size(); ++i) {
         const Expense& e = expenses_[i];
@@ -288,31 +279,31 @@ void FinanceManager::generateTop(const std::string& period,
     std::sort(
         top.begin(), top.end(),
         [](const std::pair<std::string, double>& a,
-            const std::pair<std::string, double>& b) {
-                return a.second > b.second;
+           const std::pair<std::string, double>& b) {
+            return a.second > b.second;
         });
 
     if (top.size() > 3) top.resize(3);
 
     std::ofstream file(filename.c_str());
     if (!file.is_open()) {
-        std::cout << "Не удалось открыть файл топа!\n";
+        std::cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» С‚РѕРїР°!\n";
         return;
     }
 
-    file << "ТОП-3 " << period << "\n";
+    file << "РўРћРџ-3 " << period << "\n";
     for (size_t i = 0; i < top.size(); ++i) {
         file << (i + 1) << ". " << top[i].first << ": "
-            << std::fixed << std::setprecision(2) << top[i].second << "\n";
+             << std::fixed << std::setprecision(2) << top[i].second << "\n";
     }
     file.close();
-    std::cout << "Топ сохранён в " << filename << "\n";
+    std::cout << "РўРѕРї СЃРѕС…СЂР°РЅС‘РЅ РІ " << filename << "\n";
 }
 
 void FinanceManager::saveToFile(const std::string& filename) {
     std::ofstream file(filename.c_str());
     if (!file.is_open()) {
-        std::cout << "Не удалось открыть файл для сохранения!\n";
+        std::cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ!\n";
         return;
     }
 
@@ -320,24 +311,24 @@ void FinanceManager::saveToFile(const std::string& filename) {
     for (size_t i = 0; i < expenses_.size(); ++i) {
         const Expense& e = expenses_[i];
         file << e.getDate() << ","
-            << e.getDescription() << ","
-            << std::fixed << std::setprecision(2) << e.getAmount() << ","
-            << e.getCategory().getName() << ","
-            << e.getAccount()->getName() << "\n";
+             << e.getDescription() << ","
+             << std::fixed << std::setprecision(2) << e.getAmount() << ","
+             << e.getCategory().getName() << ","
+             << e.getAccount()->getName() << "\n";
     }
     file.close();
-    std::cout << "Данные сохранены в " << filename << "\n";
+    std::cout << "Р”Р°РЅРЅС‹Рµ СЃРѕС…СЂР°РЅРµРЅС‹ РІ " << filename << "\n";
 }
 
 void FinanceManager::loadFromFile(const std::string& filename) {
     std::ifstream file(filename.c_str());
     if (!file.is_open()) {
-        std::cout << "Файл не найден!\n";
+        std::cout << "Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ!\n";
         return;
     }
 
     std::string line;
-    std::getline(file, line); // пропускаем строку заголовка
+    std::getline(file, line); // РїСЂРѕРїСѓСЃРєР°РµРј СЃС‚СЂРѕРєСѓ Р·Р°РіРѕР»РѕРІРєР°
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);
@@ -355,7 +346,7 @@ void FinanceManager::loadFromFile(const std::string& filename) {
 
         if (!isValidDateFormat(date) ||
             !isDateInRange(date, minDate_, maxDate_)) {
-            std::cout << "Пропущена запись с некорректной датой: " << date << "\n";
+            std::cout << "РџСЂРѕРїСѓС‰РµРЅР° Р·Р°РїРёСЃСЊ СЃ РЅРµРєРѕСЂСЂРµРєС‚РЅРѕР№ РґР°С‚РѕР№: " << date << "\n";
             continue;
         }
 
@@ -376,7 +367,7 @@ void FinanceManager::loadFromFile(const std::string& filename) {
     }
 
     file.close();
-    std::cout << "Данные загружены из " << filename << "\n";
+    std::cout << "Р”Р°РЅРЅС‹Рµ Р·Р°РіСЂСѓР¶РµРЅС‹ РёР· " << filename << "\n";
 }
 
 const std::vector<Account*>& FinanceManager::getAccounts() const {
