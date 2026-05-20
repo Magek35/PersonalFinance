@@ -14,9 +14,6 @@ public:
         fm.addCategory("razvlecheniya");
         fm.addCategory("zdorove");
 
-        // Пример границ дат (можешь поменять при необходимости)
-        fm.setDateBounds("2000-01-01", "2100-12-31");
-
         int choice;
         std::string accName, catName, desc, date;
         double amount;
@@ -49,7 +46,7 @@ public:
                 std::getline(std::cin, desc);
                 std::cout << "Сумма: ";
                 std::cin >> amount;
-                std::cout << "Дата (YYYY-MM-DD): ";
+                std::cout << "Дата (формат YYYY-MM-DD для корректных отчётов): ";
                 std::cin >> date;
                 fm.addExpense(accName, catName, desc, amount, date);
                 break;
@@ -63,15 +60,12 @@ public:
                 fm.generateReport("month", "report_month.txt");
                 break;
             case 6:
-                fm.generateTop("week", "top_week.txt");
+                fm.generateTop("all", "top_all.txt");
                 break;
             case 7:
-                fm.generateTop("month", "top_month.txt");
-                break;
-            case 8:
                 fm.saveToFile("finances.csv");
                 break;
-            case 9:
+            case 8:
                 fm.loadFromFile("finances.csv");
                 break;
             default:
@@ -90,13 +84,12 @@ private:
         std::cout << "\n ФИНАНСЫ \n";
         std::cout << "1. Пополнить счёт\n";
         std::cout << "2. Добавить затрату\n";
-        std::cout << "3. Отчёт по дню\n";
-        std::cout << "4. Отчёт по неделе\n";
-        std::cout << "5. Отчёт по месяцу\n";
-        std::cout << "6. Топ-3 (неделя)\n";
-        std::cout << "7. Топ-3 (месяц)\n";
-        std::cout << "8. Сохранить данные\n";
-        std::cout << "9. Загрузить данные\n";
+        std::cout << "3. Отчёт по дню (сегодня)\n";
+        std::cout << "4. Отчёт по неделе (последние 7 дней)\n";
+        std::cout << "5. Отчёт по месяцу (текущий месяц)\n";
+        std::cout << "6. Топ-3 по всем данным\n";
+        std::cout << "7. Сохранить данные\n";
+        std::cout << "8. Загрузить данные\n";
         std::cout << "0. Выход\n>> ";
     }
 };
