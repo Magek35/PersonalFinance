@@ -1,8 +1,7 @@
 #include "FinanceManager.h"
+//реализации Models (из Models.h)
 
-// ===== Реализации Models (из Models.h) =====
-
-// Account
+//Account
 Account::Account(const std::string& n)
     : name_(n), balance_(0.0) {
 }
@@ -29,10 +28,10 @@ bool Account::spendMoney(double amount) {
     return false;
 }
 
-// Wallet
+//Wallet
 Wallet::Wallet(const std::string& n) : Account(n) {}
 
-// Card
+//Card
 Card::Card(const std::string& n, double limit)
     : Account(n), creditLimit_(limit) {
 }
@@ -45,11 +44,11 @@ bool Card::spendMoney(double amount) {
     return false;
 }
 
-// Category
+//Category
 Category::Category(const std::string& n) : name_(n) {}
 const std::string& Category::getName() const { return name_; }
 
-// Expense
+//Expense
 Expense::Expense()
     : description_(), amount_(0.0),
     category_(nullptr), date_(), account_(nullptr) {
@@ -68,9 +67,8 @@ const Category& Expense::getCategory() const { return *category_; }
 const std::string& Expense::getDate() const { return date_; }
 Account* Expense::getAccount() const { return account_; }
 
-// ===== Вспомогательные функции дат для FinanceManager =====
-
-// проверка "похоже ли" на YYYY-MM-DD (10 символов, 2 тире и цифры)
+//вспомогательные функции дат для FinanceManager
+//проверка "похоже ли" на YYYY-MM-DD (10 символов, 2 тире и цифры)
 bool FinanceManager::hasValidYMD(const std::string& d) {
     if (d.size() != 10) return false;
     if (d[4] != '-' || d[7] != '-') return false;
@@ -99,13 +97,13 @@ bool FinanceManager::isSameDay(const std::string& d,
     return hasValidYMD(d) && d == today;
 }
 
-// d в пределах N последних дней (включая сегодня)
-// для простоты считаем в рамках одного месяца
+//d в пределах N последних дней (включая сегодня)
+//считает в рамках одного месяца
 bool FinanceManager::isInLastNDays(const std::string& d,
     const std::string& today,
     int days) {
     if (!hasValidYMD(d) || !hasValidYMD(today)) return false;
-    if (d > today) return false; // будущие даты не берём
+    if (d > today) return false; //будущие даты не берём
 
     int yearT = std::stoi(today.substr(0, 4));
     int monT = std::stoi(today.substr(5, 2));
@@ -115,7 +113,7 @@ bool FinanceManager::isInLastNDays(const std::string& d,
     int monD = std::stoi(d.substr(5, 2));
     int dayD = std::stoi(d.substr(8, 2));
 
-    // если год/месяц отличаются — для простоты считаем, что это "старше недели"
+    //если год/месяц отличаются — считаем, что это "старше недели"
     if (yearT != yearD || monT != monD) return false;
 
     int diff = dayT - dayD; // разница в днях в рамках месяца
@@ -125,13 +123,11 @@ bool FinanceManager::isInLastNDays(const std::string& d,
 bool FinanceManager::isSameMonth(const std::string& d,
     const std::string& today) {
     if (!hasValidYMD(d) || !hasValidYMD(today)) return false;
-    return d.substr(0, 7) == today.substr(0, 7); // YYYY-MM совпадают
+    return d.substr(0, 7) == today.substr(0, 7); //YYYY-MM совпадают
 }
 
-// ===== FinanceManager =====
-
+//FinanceManager
 FinanceManager::FinanceManager() {}
-
 Account* FinanceManager::findAccount(const std::string& name) const {
     std::string low = toLowerStr(name);
     std::vector<Account*>::const_iterator it =
@@ -170,7 +166,7 @@ void FinanceManager::addExpense(const std::string& accName,
     const std::string& desc,
     double amount,
     const std::string& date) {
-    // НЕ валидируем дату — сохраняем как есть (но отчёты используют только YYYY-MM-DD)
+    //НЕ валидируем дату — сохраняем как есть (но отчёты используют только YYYY-MM-DD)
     Account* acc = findAccount(accName);
     if (acc == NULL || !acc->spendMoney(amount)) {
         std::cout << "Ошибка: счёт не найден или недостаточно средств!\n";
@@ -201,16 +197,16 @@ void FinanceManager::generateReport(const std::string& period,
 
         bool use = false;
         if (period == "day") {
-            use = isSameDay(d, today);          // только сегодня
+            use = isSameDay(d, today);          //только сегодня
         }
         else if (period == "week") {
-            use = isInLastNDays(d, today, 7);   // последние 7 дней
+            use = isInLastNDays(d, today, 7);   //последние 7 дней
         }
         else if (period == "month") {
-            use = isSameMonth(d, today);        // текущий месяц
+            use = isSameMonth(d, today);        //текущий месяц
         }
         else {
-            use = true;                         // запасной вариант: берём всё
+            use = true;                         //запасной вариант: берём всё
         }
 
         if (!use) continue;
@@ -314,7 +310,7 @@ void FinanceManager::loadFromFile(const std::string& filename) {
     }
 
     std::string line;
-    std::getline(file, line); // пропускаем строку заголовка
+    std::getline(file, line); //пропускаем строку заголовка
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);
@@ -345,11 +341,9 @@ void FinanceManager::loadFromFile(const std::string& filename) {
         Expense e(desc, amount, &category, date, acc);
         expenses_.push_back(e);
     }
-
     file.close();
     std::cout << "Данные загружены из " << filename << "\n";
 }
-
 const std::vector<Account*>& FinanceManager::getAccounts() const {
     return accounts_;
 }

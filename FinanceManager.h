@@ -15,7 +15,7 @@
 
 #include "Models.h"
 
-// приводит строку к нижнему регистру
+//приводит строку к нижнему регистру
 inline std::string toLowerStr(const std::string& s) {
     std::string result = s;
     for (size_t i = 0; i < result.size(); ++i)
@@ -23,10 +23,10 @@ inline std::string toLowerStr(const std::string& s) {
     return result;
 }
 
-// Менеджер финансов: счета, категории, расходы, файлы
+//менеджер финансов: счета, категории, расходы, файлы
 class FinanceManager {
 public:
-    static const std::size_t MAX_ACCOUNTS = 200; // ограничение на количество счетов
+    static const std::size_t MAX_ACCOUNTS = 200; //ограничение на количество счетов
 
     FinanceManager();
 
@@ -35,12 +35,12 @@ public:
 
     void addMoney(const std::string& accName, double amount);
 
-    // date: сохраняем как есть, но для отчётов корректно работают только YYYY-MM-DD
+    //date: YYYY-MM-DD
     void addExpense(const std::string& accName, const std::string& catName,
         const std::string& desc, double amount,
         const std::string& date);
 
-    // period: "day" / "week" / "month"
+    //period: "day" / "week" / "month"
     void generateReport(const std::string& period,
         const std::string& filename);
 
@@ -53,15 +53,15 @@ public:
     const std::vector<Account*>& getAccounts() const;
 
 private:
-    std::vector<Expense>  expenses_;   // список всех расходов
-    std::vector<Account*> accounts_;   // все счета
-    std::map<std::string, Category> categories_; // категории по ключу в нижнем регистре
+    std::vector<Expense>  expenses_;   //список всех расходов
+    std::vector<Account*> accounts_;   //все счета
+    std::map<std::string, Category> categories_; //категории по ключу в нижнем регистре
 
     Account* findAccount(const std::string& name) const;
 
     // служебные функции для дат
-    static bool hasValidYMD(const std::string& d);        // YYYY-MM-DD ?
-    static std::string getToday();                        // текущая дата YYYY-MM-DD
+    static bool hasValidYMD(const std::string& d);        //YYYY-MM-DD
+    static std::string getToday();                        //текущая дата YYYY-MM-DD
     static bool isSameDay(const std::string& d,
         const std::string& today);
     static bool isInLastNDays(const std::string& d,
